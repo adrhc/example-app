@@ -23,12 +23,22 @@ export class FindBookPageComponent {
   loading$: Observable<boolean>;
 
   constructor(private store: Store<fromRoot.State>) {
-    this.searchQuery$ = store.select(fromRoot.getSearchQuery).take(1);
-    this.books$ = store.select(fromRoot.getSearchResults);
-    this.loading$ = store.select(fromRoot.getSearchLoading);
+    this.searchQuery$ = store.select(fromRoot.getSearchQuery).do((o) => {
+      console.log(`[FindBookPageComponent] searchQuery$:`);
+      console.log(o);
+    }).take(1);
+    this.books$ = store.select(fromRoot.getSearchResults).do((o) => {
+      console.log(`[FindBookPageComponent] books$:`);
+      console.log(o);
+    });
+    this.loading$ = store.select(fromRoot.getSearchLoading).do((o) => {
+      console.log(`[FindBookPageComponent] loading$:`);
+      console.log(o);
+    });
   }
 
   search(query: string) {
+    console.log(`[FindBookPageComponent] query: ${query}`);
     this.store.dispatch(new book.SearchAction(query));
   }
 }
